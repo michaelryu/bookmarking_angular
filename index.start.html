@@ -25,27 +25,27 @@
     </div>
     <!--Content-->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <div ng-repeat="bookmark in main.bookmarks | filter:{category: main.currentCategory.name}">
-        <button type="button" class="close">&times;</button>
-        <button type="button" class="btn btn-link" ng-click="main.startEditing()"><span
+      <div ng-class="{'active':main.isSelectedBookmark(bookmark)}" ng-repeat="bookmark in main.bookmarks | filter:{category: main.currentCategory.name} track by $index">
+        <button ng-click="main.deleteBookmark(bookmark)" type="button" class="close">&times;</button>
+        <button type="button" class="btn btn-link" ng-click="main.setEditedBookmark(bookmark); main.startEditing();"><span
                 class="glyphicon glyphicon-pencil"></span></button>
         <a href="{{bookmark.url}}" target="_blank">{{bookmark.title}}</a>
       </div>
-      <hr/>
-      <!--Creating Bookmark-->
       <button class="btn btn-link" ng-click="main.startCreating()">
         <span class="glyphicon glyphicon-plus"></span>
-        Create Bookmark
       </button>
+      <hr/>
+      <!--Creating Bookmark-->
       <div ng-if="main.shouldShowCreating()">
-        <form class="create-form" ng-show="main.isCreating" role="form" ng-submit="main.createBookmark(newBookmark)">
+        <h4>Create a Bookmark</h4>
+        <form class="create-form" ng-show="main.isCreating" role="form" ng-submit="main.createBookmark(main.newBookmark) " novalidate >
           <div class="form-group">
             <label for="newBookmarkTitle">Bookmark Title</label>
-            <input class="form-control" id="newBookmarkTitle" ng-model="newBookmark.title" type="text"/>
+            <input class="form-control" id="newBookmarkTitle" ng-model="main.newBookmark.title" type="text"/>
           </div>
           <div class="form-group">
             <label for="newBookmarkURL">Bookmark URL</label>
-            <input class="form-control" id="newBookmarkURL" ng-model="newBookmark.url" type="text"/>
+            <input class="form-control" id="newBookmarkURL" ng-model="main.newBookmark.url" type="text"/>
           </div>
           <button type="submit" class="btn btn-info btn-lg">Create</button>
           <button class="btn btn-default btn-lg pull-right" ng-click="main.cancelCreating()">Cancel</button>
@@ -53,8 +53,20 @@
       </div>
       <!--Editing Bookmark-->
       <div ng-if="main.shouldShowEditing()">
-        editing
-        <button class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
+        <h4>Editing {{main.editedBookmark.title}}</h4>
+
+        <form class="edit-form" role="form" ng-submit="main.updateBookmark(main.editedBookmark)">
+          <div class="form-group">
+            <label>Bookmark Title</label>
+            <input class="form-control" ng-model="main.editedBookmark.title" type="text"/>
+          </div>
+          <div class="form-group">
+            <label>Bookmark URL</label>
+            <input class="form-control" ng-model="main.editedBookmark.url" type="text"/>
+          </div>
+          <button type="submit" class="btn btn-info btn-lg">Save</button>
+          <button class="btn btn-default btn-lg pull-right" ng-click="main.cancelEditing()">Cancel</button>
+        </form>
       </div>
     </div>
   </div>
