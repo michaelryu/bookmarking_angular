@@ -1,33 +1,29 @@
-angular.module('categories', [
-  'eggly.models.categories'
+angular.module("categories", [
+  "app.models.categories"
 ])
   .config(function ($stateProvider) {
     $stateProvider
-      .state('eggly.categories', {
-        url: '/',
+      .state("app.categories", {
+        url: "/",
         views: {
-          'categories@': {
-            controller: 'CategoriesCtrl',
-            templateUrl: 'app/categories/categories.tmpl.html'
+          "categories@": {
+            controller: "CategoriesController as categoriesList",
+            templateUrl: "app/categories/categories.tmpl.html"
           },
-          'bookmarks@': {
-            controller: 'BookmarksCtrl',
-            templateUrl: 'app/categories/bookmarks/bookmarks.tmpl.html'
+          "bookmarks@": {
+            controller: "BookmarksController as bookmarks",
+            templateUrl: "app/categories/bookmarks/bookmarks.tmpl.html"
           }
         }
-      });
+      })
   })
-
-  .controller('CategoriesCtrl', function CategoriesCtrl($scope, categories) {
-    $scope.getCurrentCategoryName = categories.getCurrentCategoryName;
-
-    categories.getCategories()
+  .controller("CategoriesController", function (CategoriesModel) {
+    var categoriesList = this;
+    CategoriesModel.getCategories()
       .then(function (result) {
-        $scope.categories = result;
-      });
-
-    $scope.isCurrentCategory = function (category) {
-      return category.name === $scope.getCurrentCategoryName();
-    }
+        categoriesList.categories = result;
+      })
+    ;
   })
+
 ;

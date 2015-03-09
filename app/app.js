@@ -1,32 +1,27 @@
-angular.module("app", [])
+angular.module("App", [
+  "ui.router",
+  "categories",
+  "categories.bookmarks"
+])
 
-  .controller("MainController", function () {
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $stateProvider
+      .state("app", {
+        url: "",
+        abstract: true
+      })
+    ;
+    $urlRouterProvider.otherwise("/");
+  })
+  .controller("MainController", function ($state) {
 
-    this.categories = [
-      {"id": 0, "name": "Development"},
-      {"id": 1, "name": "Design"},
-      {"id": 2, "name": "Exercise"},
-      {"id": 3, "name": "Humor"}
-    ];
-
-    this.bookmarks = [
-      {"id": 0, "title": "AngularJS", "url": "http://angularjs.org", "category": "Development"},
-      {"id": 1, "title": "Egghead.io", "url": "http://angularjs.org", "category": "Development"},
-      {"id": 2, "title": "A List Apart", "url": "http://alistapart.com/", "category": "Design"},
-      {"id": 3, "title": "One Page Love", "url": "http://onepagelove.com/", "category": "Design"},
-      {"id": 4, "title": "MobilityWOD", "url": "http://www.mobilitywod.com/", "category": "Exercise"},
-      {"id": 5, "title": "Robb Wolf", "url": "http://robbwolf.com/", "category": "Exercise"},
-      {"id": 6, "title": "Senor Gif", "url": "http://memebase.cheezburger.com/senorgif", "category": "Humor"},
-      {"id": 7, "title": "Wimp", "url": "http://wimp.com", "category": "Humor"},
-      {"id": 8, "title": "Dump", "url": "http://dump.com", "category": "Humor"}
-    ];
-
-    this.currentCategory = this.categories[0];
+    this.currentCategory = null;
 
     // Selecting and highlighting category
 
     this.setCurrentCategory = function (category) {
       this.currentCategory = category;
+      //$state.go("app.categories.bookmarks", {category: category.name});
       this.cancelCreating();
       this.cancelEditing();
     };
@@ -34,7 +29,7 @@ angular.module("app", [])
       return this.currentCategory !== null && this.currentCategory.name === category.name;
     };
 
-    this.isSelectedBookmark = function (bookmark){
+    this.isSelectedBookmark = function (bookmark) {
       return this.editedBookmark !== null && this.editedBookmark.id === bookmark.id;
     };
 
@@ -96,8 +91,8 @@ angular.module("app", [])
       this.editedBookmark = null;
     };
 
-    this.deleteBookmark = function(bookmark){
-      _.remove(this.bookmarks, function(b){
+    this.deleteBookmark = function (bookmark) {
+      _.remove(this.bookmarks, function (b) {
         return b.id == bookmark.id;
       })
     };
