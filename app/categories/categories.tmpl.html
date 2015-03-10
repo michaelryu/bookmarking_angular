@@ -1,4 +1,4 @@
-<a href="#" ng-click="main.setCurrentCategory(null)"><img class="logo" src="assets/img/eggly-logo.png"></a>
+<a ui-sref="app.categories" ng-click="main.setCurrentCategory(null)"><img class="logo" src="assets/img/eggly-logo.png"></a>
 <ul class="nav nav-sidebar">
   <li ng-repeat="category in categoriesList.categories" ng-class="{'active':main.isCurrentCategory(category)}">
     <a ui-sref="app.categories.bookmarks({category:category.name})" ng-click="main.setCurrentCategory(category)">{{category.name}}</a>

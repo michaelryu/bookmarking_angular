@@ -16,12 +16,18 @@ angular.module("categories.bookmarks", [
         }
       })
   })
-  .controller("BookmarksController", function ($stateParams, BookmarksModel) {
+  .controller('BookmarksController', function ($stateParams, CategoriesModel, BookmarksModel) {
     var bookmarksList = this;
-    bookmarksList.currentCategoryName = $stateParams.category;
+
+    CategoriesModel.setCurrentCategory($stateParams.category);
+
     BookmarksModel.getBookmarks()
-      .then(function (result) {
-        bookmarksList.bookmarks = result;
-      })
+      .then(function (bookmarks) {
+        bookmarksList.bookmarks = bookmarks;
+      });
+
+    bookmarksList.getCurrentCategory = CategoriesModel.getCurrentCategory;
+    bookmarksList.getCurrentCategoryName = CategoriesModel.getCurrentCategoryName;
+    bookmarksList.deleteBookmark = BookmarksModel.deleteBookmark;
   })
 ;
